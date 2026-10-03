@@ -31,7 +31,7 @@
                     Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Remarks}" />
+                            <base:FlagTextBlock FlagText="{Binding Remarks}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -284,7 +284,7 @@
                         Binding="{Binding ConfigType}"
                         ExName="ConfigType"
                         Header="{x:Static resx:ResUI.LvServiceType}" />
-                    <base:MyDGTextColumn
+                    <base:FlagTextColumn
                         Width="150"
                         Binding="{Binding Remarks}"
                         ExName="Remarks"
@@ -346,9 +346,9 @@
                         ExName="TodayUp"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}" />
 
-                    <base:MyDGTextColumn
+                    <base:FlagTextColumn
                         x:Name="colIpInfo"
-                        Width="100"
+                        Width="160"
                         Binding="{Binding IpInfo}"
                         ExName="IpInfo"
                         Header="{x:Static resx:ResUI.LvTestIpInfo}" />

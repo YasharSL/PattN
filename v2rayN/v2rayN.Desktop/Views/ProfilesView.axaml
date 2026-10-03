@@ -229,6 +229,7 @@
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
+                                        FontFamily="avares://PattN/Assets/Fonts/TwemojiMozilla.ttf#Twemoji Mozilla, $Default"
                                         Text="{Binding Remarks}" />
                                 </StackPanel>
                             </DataTemplate>
@@ -281,7 +282,7 @@
                         Header="{x:Static resx:ResUI.LvTestSpeed}"
                         Tag="SpeedVal" />
 
-                    <DataGridTemplateColumn SortMemberPath="IpInfo" Tag="IpInfo">
+                    <DataGridTemplateColumn Width="160" SortMemberPath="IpInfo" Tag="IpInfo">
                         <DataGridTemplateColumn.Header>
                             <TextBlock Text="{x:Static resx:ResUI.LvTestIpInfo}" />
                         </DataGridTemplateColumn.Header>
@@ -290,6 +291,7 @@
                                 <SelectableTextBlock
                                     Margin="{StaticResource MarginLr8}"
                                     VerticalAlignment="Center"
+                                    FontFamily="avares://PattN/Assets/Fonts/TwemojiMozilla.ttf#Twemoji Mozilla, Segoe UI, Noto Sans"
                                     Text="{Binding Path=IpInfo, Mode=OneWay}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

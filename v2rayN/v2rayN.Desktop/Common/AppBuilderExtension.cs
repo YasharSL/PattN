@@ -18,6 +18,11 @@ public static class AppBuilderExtension
 
         if (OperatingSystem.IsWindows())
         {
+            // Segoe UI Emoji draws flag emoji as letter pairs. Twemoji Mozilla draws the flag picture.
+            fallbacks.Add(new FontFallback
+            {
+                FontFamily = new FontFamily("avares://PattN/Assets/Fonts/TwemojiMozilla.ttf#Twemoji Mozilla")
+            });
             AddFontFallback(fallbacks, "Segoe UI Emoji");
             AddFontFallback(fallbacks, "Segoe UI Symbol");
         }

@@ -1,0 +1,12 @@
+Twemoji Mozilla
+
+Copyright 2020 Twitter, Inc and other contributors
+
+The font file TwemojiMozilla.ttf is the COLR build from
+https://github.com/mozilla/twemoji-colr (tag v0.6.0).
+
+Graphics and this font build are licensed under CC-BY 4.0:
+https://creativecommons.org/licenses/by/4.0/
+
+PattN uses this font so Windows can draw country-flag emoji.
+Segoe UI Emoji does not contain those flag glyphs.

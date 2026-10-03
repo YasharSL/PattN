@@ -24,6 +24,7 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="ReactiveUI.WPF" />
+		<PackageReference Include="SkiaSharp.HarfBuzz" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,6 +37,9 @@
 		<Resource Include="Resources\NotifyIcon3.ico" />
 		<Resource Include="Resources\NotifyIcon4.ico" />
 		<Resource Include="Resources\v2rayN.ico" />
+		<Resource Include="..\Assets\Fonts\TwemojiMozilla.ttf">
+			<Link>Resources/TwemojiMozilla.ttf</Link>
+		</Resource>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -39,6 +39,9 @@
 	<ItemGroup>
 		<ProjectCapability Include="Avalonia" />
 		<AvaloniaResource Include="Assets\**" />
+		<AvaloniaResource Include="..\Assets\Fonts\TwemojiMozilla.ttf">
+			<Link>Assets/Fonts/TwemojiMozilla.ttf</Link>
+		</AvaloniaResource>
 		<ProjectReference Include="..\GlobalHotKeys\src\GlobalHotKeys\GlobalHotKeys.csproj" />
 		<ProjectReference Include="..\ServiceLib\ServiceLib.csproj" />
 	</ItemGroup>

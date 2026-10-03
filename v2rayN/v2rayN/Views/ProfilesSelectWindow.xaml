@@ -122,7 +122,7 @@
                             Binding="{Binding ConfigType}"
                             ExName="ConfigType"
                             Header="{x:Static resx:ResUI.LvServiceType}" />
-                        <base:MyDGTextColumn
+                        <base:FlagTextColumn
                             Width="200"
                             Binding="{Binding Remarks}"
                             ExName="Remarks"
