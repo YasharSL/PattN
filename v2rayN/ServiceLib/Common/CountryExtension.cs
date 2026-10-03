@@ -6,87 +6,27 @@ namespace ServiceLib.Common;
 public static class CountryExtension
 {
     /// <summary>
-    /// Country code to emoji flag mapping for common countries
-    /// </summary>
-    private static readonly Dictionary<string, string> CountryEmojiMap = new(StringComparer.OrdinalIgnoreCase)
-    {
-        // Asia
-        { "CN", "🇨🇳" }, // China
-        { "HK", "🇭🇰" }, // Hong Kong
-        { "TW", "🇹🇼" }, // Taiwan
-        { "JP", "🇯🇵" }, // Japan
-        { "SG", "🇸🇬" }, // Singapore
-        { "KR", "🇰🇷" }, // South Korea
-        { "TH", "🇹🇭" }, // Thailand
-        { "VN", "🇻🇳" }, // Vietnam
-        { "ID", "🇮🇩" }, // Indonesia
-        { "PH", "🇵🇭" }, // Philippines
-        { "MY", "🇲🇾" }, // Malaysia
-        { "IN", "🇮🇳" }, // India
-        { "PK", "🇵🇰" }, // Pakistan
-        { "BD", "🇧🇩" }, // Bangladesh
-        { "LK", "🇱🇰" }, // Sri Lanka
-        { "KH", "🇰🇭" }, // Cambodia
-        { "LA", "🇱🇦" }, // Laos
-        { "MM", "🇲🇲" }, // Myanmar
-
-        // Americas
-        { "US", "🇺🇸" }, // United States
-        { "CA", "🇨🇦" }, // Canada
-        { "MX", "🇲🇽" }, // Mexico
-        { "BR", "🇧🇷" }, // Brazil
-        { "AR", "🇦🇷" }, // Argentina
-        { "CL", "🇨🇱" }, // Chile
-        { "CO", "🇨🇴" }, // Colombia
-
-        // Europe
-        { "GB", "🇬🇧" }, // United Kingdom
-        { "DE", "🇩🇪" }, // Germany
-        { "FR", "🇫🇷" }, // France
-        { "IT", "🇮🇹" }, // Italy
-        { "ES", "🇪🇸" }, // Spain
-        { "RU", "🇷🇺" }, // Russia
-        { "NL", "🇳🇱" }, // Netherlands
-        { "CH", "🇨🇭" }, // Switzerland
-        { "SE", "🇸🇪" }, // Sweden
-        { "NO", "🇳🇴" }, // Norway
-        { "DK", "🇩🇰" }, // Denmark
-        { "FI", "🇫🇮" }, // Finland
-        { "PL", "🇵🇱" }, // Poland
-        { "CZ", "🇨🇿" }, // Czech Republic
-        { "AT", "🇦🇹" }, // Austria
-        { "GR", "🇬🇷" }, // Greece
-        { "PT", "🇵🇹" }, // Portugal
-        { "TR", "🇹🇷" }, // Turkey
-        { "UA", "🇺🇦" }, // Ukraine
-        { "RO", "🇷🇴" }, // Romania
-
-        // Middle East & Central Asia
-        { "AE", "🇦🇪" }, // United Arab Emirates
-        { "SA", "🇸🇦" }, // Saudi Arabia
-        { "IL", "🇮🇱" }, // Israel
-        { "KZ", "🇰🇿" }, // Kazakhstan
-
-        // Oceania
-        { "AU", "🇦🇺" }, // Australia
-        { "NZ", "🇳🇿" }, // New Zealand
-
-        // Africa
-        { "ZA", "🇿🇦" }, // South Africa
-        { "EG", "🇪🇬" }, // Egypt
-    };
-
-    /// <summary>
-    /// Converts country code to flag emoji using predefined mapping
-    /// Example: "US" -> "🇺🇸", "CN" -> "🇨🇳"
+    /// Converts an ISO 3166-1 alpha-2 code to a flag emoji.
+    /// Example: "US" -> "🇺🇸", "NL" -> "🇳🇱"
     /// </summary>
     public static string? CountryToEmoji(this string? countryCode)
     {
-        if (countryCode.IsNullOrEmpty())
+        if (countryCode is not { Length: 2 })
         {
             return null;
         }
 
-        return CountryEmojiMap.GetValueOrDefault(countryCode);
+        var upper = countryCode.ToUpperInvariant();
+        var first = upper[0];
+        var second = upper[1];
+        if (first is < 'A' or > 'Z' || second is < 'A' or > 'Z')
+        {
+            return null;
+        }
+
+        const int regionalIndicatorA = 0x1F1E6;
+        return string.Concat(
+            char.ConvertFromUtf32(regionalIndicatorA + (first - 'A')),
+            char.ConvertFromUtf32(regionalIndicatorA + (second - 'A')));
     }
 }
