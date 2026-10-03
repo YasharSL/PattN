@@ -112,6 +112,9 @@ public class Global
     public const string SingboxLocalDNSTag = "local-local";
     public const string SingboxHostsDNSTag = "hosts-dns";
     public const string SingboxFakeDNSTag = "fake-dns";
+    // PattN: sing-box's fake IP ranges are XTLS/Xray-core's default fake DNS pools (features/dns/fakedns.go)
+    public const string SingboxFakeIPv4Range = "198.18.0.0/15";
+    public const string SingboxFakeIPv6Range = "2001:2::/48";
     public const string SingboxSrsDownloadHttpClientTag = "srs-download-http-client";
 
     public const int Hysteria2DefaultHopInt = 30;
@@ -263,7 +266,8 @@ public class Global
         { EConfigType.TUIC, "tuic" },
         { EConfigType.WireGuard, "wireguard" },
         { EConfigType.Anytls, "anytls" },
-        { EConfigType.Naive, "naive" }
+        { EConfigType.Naive, "naive" },
+        { EConfigType.MASQUE, "masque" },
     };
 
     public static readonly List<string> VmessSecurities =
@@ -373,6 +377,7 @@ public class Global
         EConfigType.Trojan,
         EConfigType.Hysteria2,
         EConfigType.WireGuard,
+        EConfigType.MASQUE,
         EConfigType.SOCKS,
         EConfigType.HTTP,
     ];
@@ -388,6 +393,7 @@ public class Global
         EConfigType.Anytls,
         EConfigType.Naive,
         EConfigType.WireGuard,
+        EConfigType.MASQUE,
         EConfigType.SOCKS,
         EConfigType.HTTP,
     ];
@@ -769,12 +775,6 @@ public class Global
         "unreachable",
         "drop",
         "reply",
-    ];
-
-    public static readonly List<string> FakeIPRanges =
-    [
-        "198.18.0.0/15",
-        "11.0.0.0/8",
     ];
 
     public static readonly List<string> RootCertProviders =

@@ -24,6 +24,7 @@ public record CoreConfigContext
 
     public bool IsWindows { get; init; }
     public bool IsMacOS { get; init; }
+    public bool IsLinux { get; init; }
 
     // Defaults to true so that a context built without this flag keeps routing IPv6 into the
     // tunnel; only a positive detection of the host having no global IPv6 address turns it off.
@@ -31,4 +32,10 @@ public record CoreConfigContext
 
     // Generation Context
     public Dictionary<object, string> CustomOutboundMap { get; init; } = new();
+
+    // PattN: the ECH outbounds of the profiles in this config, appended after every other outbound
+    public List<EchOutboundItem> EchOutbounds { get; init; } = [];
 }
+
+// PattN: an ECH outbound as a profile wrote it, and the tag it has in the generated config
+public record EchOutboundItem(JsonObject Outbound, string Tag);

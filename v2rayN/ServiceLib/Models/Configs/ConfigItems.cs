@@ -243,9 +243,9 @@ public class WebDavItem
 [Serializable]
 public class CheckUpdateItem
 {
-    public bool CheckPreReleaseUpdate { get; set; }
     public bool UpdateViaProxy { get; set; } = true;
     public List<string>? SelectedCoreTypes { get; set; }
+    public List<string>? CheckPreReleaseCoreTypes { get; set; }
 }
 
 [Serializable]
@@ -278,7 +278,6 @@ public class SimpleDNSItem
     public bool? AddCommonHosts { get; set; }
     public bool? FakeIP { get; set; }
     public bool? GlobalFakeIp { get; set; }
-    public string? FakeIPRange { get; set; }
     public bool? BlockBindingQuery { get; set; }
     public bool? BlockAAAAQuery { get; set; }
     public string? DirectDNS { get; set; }

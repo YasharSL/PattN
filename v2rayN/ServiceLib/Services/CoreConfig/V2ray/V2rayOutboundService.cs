@@ -180,6 +180,12 @@ public partial class CoreConfigV2rayService
                         outboundSettings.version = 2;
                         break;
                     }
+                case EConfigType.MASQUE:
+                    {
+                        outboundSettings.address = _node.Address;
+                        outboundSettings.port = _node.Port;
+                        break;
+                    }
                 case EConfigType.WireGuard:
                     {
                         var address = _node.Address;
@@ -256,6 +262,10 @@ public partial class CoreConfigV2rayService
             {
                 network = "hysteria";
             }
+            else if (_node.ConfigType == EConfigType.MASQUE)
+            {
+                network = "masque";
+            }
             streamSettings.network = network;
             if (_node.DialMode.IsNotEmpty())
             {
@@ -264,6 +274,7 @@ public partial class CoreConfigV2rayService
                 streamSettings.sockopt.dialMode = _node.DialMode;
             }
             var transport = _node.GetTransportExtra();
+            var protocolExtra = _node.GetProtocolExtra();
             var host = string.Empty;
             var path = string.Empty;
             var kcpSeed = string.Empty;
@@ -336,6 +347,12 @@ public partial class CoreConfigV2rayService
                 {
                     // For legacy xray compatibility, remove this in the future
                     tlsSettings.echForceQuery = "full";
+                }
+                // PattN: the ECH config query goes through the profile's ECH outbound, which is
+                // appended to the config after every other outbound (AppendEchOutbounds)
+                if (NodeValidator.ValidateEchOutbound(_node, out var echOutbound) == null && echOutbound != null)
+                {
+                    tlsSettings.echSockopt = new Sockopt4Ray { dialerProxy = AddEchOutbound(echOutbound) };
                 }
                 var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
@@ -508,7 +525,6 @@ public partial class CoreConfigV2rayService
                     break;
 
                 case "hysteria":
-                    var protocolExtra = _node.GetProtocolExtra();
                     var ports = protocolExtra?.Ports;
                     int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
                         ? su
@@ -578,6 +594,32 @@ public partial class CoreConfigV2rayService
                     };
                     hy2Finalmask.udp?.Reverse();
                     streamSettings.finalmask = hy2Finalmask;
+                    break;
+
+                case "masque":
+                    var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                    var authValue = $"Basic {Utils.Base64Encode($"{_node.Username}:{_node.Password}")}";
+                    headers.Add("Authorization", authValue);
+                    if (!string.IsNullOrEmpty(protocolExtra?.MasqueHeaders))
+                    {
+                        var userHeaders = Utils.ParseHeaders(protocolExtra.MasqueHeaders)
+                            .GroupBy(x => x.Item1, StringComparer.OrdinalIgnoreCase)
+                            .ToDictionary(
+                                g => g.Key,
+                                g => string.Join(", ", g.Select(x => x.Item2)),
+                                StringComparer.OrdinalIgnoreCase
+                            );
+                        if (userHeaders.TryGetValue("Authorization", out var userAuthValue))
+                        {
+                            headers["Authorization"] = userAuthValue;
+                        }
+                        headers = userHeaders;
+                    }
+                    streamSettings.masqueSettings = new()
+                    {
+                        path = protocolExtra?.MasquePath.NullIfEmpty(),
+                        headers = headers.Count > 0 ? headers : null,
+                    };
                     break;
 
                 default:

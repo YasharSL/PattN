@@ -101,6 +101,12 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
     public partial int GeckoMaxPacketSize { get; set; }
 
     [Reactive]
+    public partial string MasquePath { get; set; }
+
+    [Reactive]
+    public partial string MasqueHeaders { get; set; }
+
+    [Reactive]
     public partial string RawHeaderType { get; set; }
 
     [Reactive]
@@ -326,6 +332,8 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         Hy2RealmUrl = protocolExtra.Hy2RealmUrl ?? string.Empty;
         GeckoMinPacketSize = protocolExtra.GeckoMinPacketSize.ToInt();
         GeckoMaxPacketSize = protocolExtra.GeckoMaxPacketSize.ToInt();
+        MasquePath = protocolExtra.MasquePath ?? string.Empty;
+        MasqueHeaders = protocolExtra.MasqueHeaders ?? string.Empty;
 
         RawHeaderType = transport.RawHeaderType ?? Global.None;
         Host = transport.Host ?? string.Empty;
@@ -396,6 +404,13 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.InvalidHttpOutboundHeaders);
             return;
         }
+        // PattN: the ECH outbound needs EchConfigList and a tag of its own
+        var echOutboundError = NodeValidator.ValidateEchOutbound(SelectedSource);
+        if (echOutboundError != null)
+        {
+            NoticeManager.Instance.Enqueue(echOutboundError);
+            return;
+        }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
         SelectedSource.AllowInsecure = AllowInsecure ? Global.StringTrue : Global.StringFalse;
         SelectedSource.MuxEnabled = MuxEnabled;
@@ -449,6 +464,8 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             Hy2RealmUrl = realm?.ToUri().NullIfEmpty(),
             GeckoMinPacketSize = GeckoMinPacketSize > 0 ? GeckoMinPacketSize.ToString() : null,
             GeckoMaxPacketSize = GeckoMaxPacketSize > 0 ? GeckoMaxPacketSize.ToString() : null,
+            MasquePath = MasquePath.NullIfEmpty(),
+            MasqueHeaders = MasqueHeaders.NullIfEmpty(),
         });
         SelectedSource.SetTransportExtra(transport);
 

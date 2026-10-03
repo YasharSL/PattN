@@ -142,6 +142,14 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                             this.Bind(ViewModel, vm => vm.InsecureConcurrency, v => v.txtInsecureConcurrency12.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled12.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
+
+                        case EConfigType.MASQUE:
+                            this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtId14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.MasquePath, v => v.txtPath14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.MasqueHeaders, v => v.txtHttpHeaders14.Text).DisposeWith(currentTypeDisposables);
+                            break;
+
                     }
                 })
                 .DisposeWith(disposables);
@@ -180,6 +188,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.CertTip, v => v.labCertPinning.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Cert, v => v.txtCert.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchConfigList, v => v.txtEchConfigList.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.EchOutbound, v => v.txtEchOutbound.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.VerifyPeerCertByName, v => v.txtVerifyPeerCertByName.Text).DisposeWith(disposables);
 
             //reality
@@ -255,6 +264,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 cmbCoreType.IsEnabled = false;
                 cmbFingerprint.IsEnabled = false;
                 gridFinalmask.IsVisible = false;
+                tbEchOutbound.IsVisible = false;
+                btnEchOutbound.IsVisible = false;
 
                 cmbCongestionControl8.ItemsSource = Global.TuicCongestionControls;
                 break;
@@ -275,6 +286,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 lstStreamSecurity.Add(Global.StreamSecurityReality);
                 cmbCoreType.IsEnabled = false;
                 gridFinalmask.IsVisible = false;
+                tbEchOutbound.IsVisible = false;
+                btnEchOutbound.IsVisible = false;
                 break;
 
             case EConfigType.Naive:
@@ -283,12 +296,24 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridTransport.IsVisible = false;
                 cmbCoreType.IsEnabled = false;
                 gridFinalmask.IsVisible = false;
+                tbEchOutbound.IsVisible = false;
+                btnEchOutbound.IsVisible = false;
                 cmbFingerprint.IsEnabled = false;
                 cmbAlpn.IsEnabled = false;
                 txtCipherSuites.IsEnabled = false;
                 togAllowInsecure.IsEnabled = false;
 
                 cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
+                break;
+
+            case EConfigType.MASQUE:
+                gridMasque.IsVisible = true;
+                sepa2.IsVisible = false;
+                gridTransport.IsVisible = false;
+                cmbFingerprint.IsEnabled = false;
+                cmbAlpn.IsEnabled = false;
+                txtCipherSuites.IsEnabled = false;
+                togAllowInsecure.IsEnabled = false;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;

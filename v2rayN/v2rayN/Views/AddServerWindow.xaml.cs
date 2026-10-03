@@ -140,6 +140,13 @@ public partial class AddServerWindow
                             this.Bind(ViewModel, vm => vm.InsecureConcurrency, v => v.txtInsecureConcurrency12.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled12.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
+
+                        case EConfigType.MASQUE:
+                            this.Bind(ViewModel, vm => vm.SelectedSource.Username, v => v.txtId14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.MasquePath, v => v.txtPath14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.MasqueHeaders, v => v.txtHeaders14.Text).DisposeWith(currentTypeDisposables);
+                            break;
                     }
                 })
                 .DisposeWith(disposables);
@@ -179,6 +186,7 @@ public partial class AddServerWindow
             this.Bind(ViewModel, vm => vm.Cert, v => v.txtCert.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Cert, v => v.txtCert.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.EchConfigList, v => v.txtEchConfigList.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.EchOutbound, v => v.txtEchOutbound.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.VerifyPeerCertByName, v => v.txtVerifyPeerCertByName.Text).DisposeWith(disposables);
 
             //reality
@@ -255,6 +263,8 @@ public partial class AddServerWindow
                 cmbCoreType.IsEnabled = false;
                 cmbFingerprint.IsEnabled = false;
                 gridFinalmask.Visibility = Visibility.Collapsed;
+                tbEchOutbound.Visibility = Visibility.Collapsed;
+                btnEchOutbound.Visibility = Visibility.Collapsed;
 
                 cmbCongestionControl8.ItemsSource = Global.TuicCongestionControls;
                 break;
@@ -275,6 +285,8 @@ public partial class AddServerWindow
                 cmbCoreType.IsEnabled = false;
                 lstStreamSecurity.Add(Global.StreamSecurityReality);
                 gridFinalmask.Visibility = Visibility.Collapsed;
+                tbEchOutbound.Visibility = Visibility.Collapsed;
+                btnEchOutbound.Visibility = Visibility.Collapsed;
                 break;
 
             case EConfigType.Naive:
@@ -283,12 +295,24 @@ public partial class AddServerWindow
                 gridTransport.Visibility = Visibility.Collapsed;
                 cmbCoreType.IsEnabled = false;
                 gridFinalmask.Visibility = Visibility.Collapsed;
+                tbEchOutbound.Visibility = Visibility.Collapsed;
+                btnEchOutbound.Visibility = Visibility.Collapsed;
                 cmbFingerprint.IsEnabled = false;
                 cmbAlpn.IsEnabled = false;
                 txtCipherSuites.IsEnabled = false;
                 togAllowInsecure.IsEnabled = false;
 
                 cmbCongestionControl12.ItemsSource = Global.NaiveCongestionControls;
+                break;
+
+            case EConfigType.MASQUE:
+                gridMasque.Visibility = Visibility.Visible;
+                sepa2.Visibility = Visibility.Collapsed;
+                gridTransport.Visibility = Visibility.Collapsed;
+                cmbFingerprint.IsEnabled = false;
+                cmbAlpn.IsEnabled = false;
+                txtCipherSuites.IsEnabled = false;
+                togAllowInsecure.IsEnabled = false;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
